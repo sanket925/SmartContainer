@@ -13,4 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="create_new">Create New</string>
+    <string name="enter_passwo">Enter Passwo</string>
+    <string name="title_activity_container_data_display">ContainerDataDisplayActivity</string>
 </resources>
