@@ -2,14 +2,18 @@ package com.example.smokashi.smartcontainer;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ListViewCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -20,10 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class ContainerListActivity extends AppCompatActivity {
+public class ContainerListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     public String TAG = ContainerListActivity.class.getSimpleName();
-
+    ListAdapter adapter;
     private ProgressDialog pDialog;
     private ListView lv;
 
@@ -42,9 +46,21 @@ public class ContainerListActivity extends AppCompatActivity {
 
         new GetAuthor().execute();
 
+        lv.setOnItemClickListener(this);
     }
 
-private class GetAuthor extends AsyncTask<Void, Void, Void>{
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        String data= ((TextView) view.findViewById(R.id.message)).getText().toString();
+
+        Intent intent = new Intent(getApplicationContext(),ContainerDataDisplayActivity.class);
+        intent.putExtra("data" , data);
+        startActivity(intent);
+        finish();
+    }
+
+    private class GetAuthor extends AsyncTask<Void, Void, Void>{
 
     @Override
     protected void onPreExecute(){
@@ -69,10 +85,10 @@ private class GetAuthor extends AsyncTask<Void, Void, Void>{
             try{
             //    JSONObject jsonObj = new JSONObject(jsonStr);
 
-                JSONArray authors = new JSONArray(jsonStr);
+                JSONArray authorsArray = new JSONArray(jsonStr);
 
-                for(int i=0; i<authors.length(); i++){
-                    JSONObject a = authors.getJSONObject(i);
+                for(int i = 0; i< authorsArray.length(); i++){
+                    JSONObject a = authorsArray.getJSONObject(i);
 
                     String author = a.getString("author");
                     String id = a.getString("id");
@@ -115,7 +131,7 @@ private class GetAuthor extends AsyncTask<Void, Void, Void>{
         if(pDialog.isShowing())
             pDialog.dismiss();
 
-        ListAdapter adapter = new SimpleAdapter(
+        adapter = new SimpleAdapter(
           ContainerListActivity.this, authorList,
                 R.layout.list_item, new String[]{"author","id","message"},
                 new int[]{R.id.author,R.id.id,R.id.message});
