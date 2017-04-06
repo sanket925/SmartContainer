@@ -6,4 +6,47 @@
     android:layout_height="match_parent"
     tools:context="com.example.smokashi.smartcontainer.ContainerDataDisplayActivity">
 
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bargraph"
+        android:layout_width="363dp"
+        android:layout_height="214dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.288"
+        tools:layout_editor_absoluteY="69dp"></com.github.mikephil.charting.charts.BarChart>
+
+
+    <TextView
+        android:id="@+id/containerNameTextView"
+        android:layout_width="149dp"
+        android:layout_height="38dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/bargraph"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="360dp"
+        android:layout_height="218dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bargraph"
+        app:layout_constraintVertical_bias="0.038" />
 </android.support.constraint.ConstraintLayout>

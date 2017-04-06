@@ -19,6 +19,10 @@ android {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -29,6 +33,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
     compile 'com.google.firebase:firebase-messaging:9.4.0'
     compile 'com.android.volley:volley:1.0.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'
