@@ -4,7 +4,6 @@ package com.example.smokashi.smartcontainer;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,20 +30,20 @@ public class ContainerListActivity extends AppCompatActivity implements AdapterV
     private ProgressDialog pDialog;
     private ListView lv;
 
-    private static String url ="http://10.0.2.2:8080/messenger/webapi/messages";
+    private static String url ="http://10.192.39.123:8080/messenger2/webapi/Database/getCurrentWeight";
 
-    ArrayList<HashMap<String, String>> authorList;
+    ArrayList<HashMap<String, String>> containerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_container_list);
 
-        authorList = new ArrayList<>();
+        containerList = new ArrayList<>();
 
         lv = (ListView) findViewById(R.id.list);
 
-        new GetAuthor().execute();
+        new GetContainers().execute();
 
         lv.setOnItemClickListener(this);
     }
@@ -52,15 +51,17 @@ public class ContainerListActivity extends AppCompatActivity implements AdapterV
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        String data= ((TextView) view.findViewById(R.id.message)).getText().toString();
+        String container_no= ((TextView) view.findViewById(R.id.container_no)).getText().toString();
+        String container_name= ((TextView) view.findViewById(R.id.container_name)).getText().toString();
 
         Intent intent = new Intent(getApplicationContext(),ContainerDataDisplayActivity.class);
-        intent.putExtra("data" , data);
+        intent.putExtra("container_no" , container_no);
+        intent.putExtra("container_name" , container_name);
         startActivity(intent);
         finish();
     }
 
-    private class GetAuthor extends AsyncTask<Void, Void, Void>{
+    private class GetContainers extends AsyncTask<Void, Void, Void>{
 
     @Override
     protected void onPreExecute(){
@@ -85,22 +86,22 @@ public class ContainerListActivity extends AppCompatActivity implements AdapterV
             try{
             //    JSONObject jsonObj = new JSONObject(jsonStr);
 
-                JSONArray authorsArray = new JSONArray(jsonStr);
+                JSONArray containersArray = new JSONArray(jsonStr);
 
-                for(int i = 0; i< authorsArray.length(); i++){
-                    JSONObject a = authorsArray.getJSONObject(i);
+                for(int i = 0; i< containersArray.length(); i++){
+                    JSONObject a = containersArray.getJSONObject(i);
 
-                    String author = a.getString("author");
-                    String id = a.getString("id");
-                    String message = a.getString("message");
+                    String container_name = /*"Name : " + */a.getString("container_name");
+                    String current_weight = /*"Weight : " + */a.getString("Current_weight");
+                    String container_id = /*"Id : " + */a.getString("container_id");
 
-                    HashMap<String, String> authorMap = new HashMap<>();
+                    HashMap<String, String> containerMap = new HashMap<>();
 
-                    authorMap.put("author" , author);
-                    authorMap.put("id" , id);
-                    authorMap.put("message" , message);
+                    containerMap.put("container_name" , container_name);
+                    containerMap.put("container_current_weight" , current_weight);
+                    containerMap.put("container_no" , container_id);
 
-                    authorList.add(authorMap);
+                    containerList.add(containerMap);
                 }
             } catch(final JSONException e){
                 Log.e(TAG, "Json PArsing Error: " + e.getMessage());
@@ -132,9 +133,9 @@ public class ContainerListActivity extends AppCompatActivity implements AdapterV
             pDialog.dismiss();
 
         adapter = new SimpleAdapter(
-          ContainerListActivity.this, authorList,
-                R.layout.list_item, new String[]{"author","id","message"},
-                new int[]{R.id.author,R.id.id,R.id.message});
+          ContainerListActivity.this, containerList,
+                R.layout.list_item, new String[]{ "container_no" , "container_name" , "container_current_weight" },
+                new int[]{ R.id.container_no , R.id.container_name , R.id.container_current_weight });
 
         lv.setAdapter(adapter);
     }
