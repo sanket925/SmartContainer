@@ -78,7 +78,7 @@ public class ContainerListActivity extends AppCompatActivity implements AdapterV
 
         HttpHandler sh = new HttpHandler();
 
-        String jsonStr = sh.makeServiceCall(url);
+        String jsonStr = sh.makeServiceCall(url,"GET");
 
         Log.e(TAG, "Response from URL: " + jsonStr);
 

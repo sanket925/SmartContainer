@@ -80,7 +80,7 @@ public class ContainerDataDisplayActivity extends AppCompatActivity {
 
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.makeServiceCall(url + container_no);
+            String jsonStr = sh.makeServiceCall(url + container_no,"GET");
 
             Log.e(TAG, "Response from URL: " + jsonStr);
 

@@ -16,4 +16,6 @@
     <string name="create_new">Create New</string>
     <string name="enter_passwo">Enter Passwo</string>
     <string name="title_activity_container_data_display">ContainerDataDisplayActivity</string>
+    <string name="FCM_PREF">com.example.smokashi.smartcontainer.fcm_pref</string>
+    <string name="FCM_TOKEN">com.example.smokashi.smartcontainer.fcm_token</string>
 </resources>
