@@ -1,5 +1,7 @@
 package com.example.smokashi.smartcontainer;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,25 +18,15 @@ import static com.android.volley.VolleyLog.TAG;
  */
 
 public class FCMInstanceIDService extends FirebaseInstanceIdService {
-    public final String url ="http://localhost:8080/messenger2/webapi/Database/addFCMTokenToDb";
+
     @Override
     public void onTokenRefresh()
     {
         String recent_token = FirebaseInstanceId.getInstance().getToken();
-        HttpHandler sh = new HttpHandler();
-
-        JSONObject tokenInfo = new JSONObject();
-        try {
-            tokenInfo.put("token_value",recent_token);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Boolean  result = sh.makeServiceCall(url,"POST",tokenInfo);
-        if(!result)
-        {
-            Log.e(TAG, "Error making request");
-            Toast.makeText(getApplicationContext(),"Error making request",Toast.LENGTH_LONG).show();
-        }
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.FCM_PREF), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.FCM_TOKEN),recent_token);
+        editor.commit();
 
 
     }
