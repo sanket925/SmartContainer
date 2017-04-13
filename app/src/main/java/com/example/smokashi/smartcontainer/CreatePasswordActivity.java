@@ -37,6 +37,7 @@ public class CreatePasswordActivity extends AppCompatActivity {
                         SharedPreferences settings = getSharedPreferences("PREFS", 0);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("password", text1);
+                        editor.putString("startstop", "started");
                         editor.apply();
 
                         Intent intent = new Intent(getApplicationContext(), ContainerListActivity.class);

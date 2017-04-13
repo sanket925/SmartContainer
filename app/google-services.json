@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "414500360359",
+    "firebase_url": "https://smartcontainer-1ac63.firebaseio.com",
+    "project_id": "smartcontainer-1ac63",
+    "storage_bucket": "smartcontainer-1ac63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414500360359:android:52a99968004ac5fd",
+        "android_client_info": {
+          "package_name": "com.example.smokashi.smartcontainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414500360359-1n0865rlijn28nt7o3096959jia2p23m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJf5HEc_9BHcWVcu27HycQmPODH4zigJ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

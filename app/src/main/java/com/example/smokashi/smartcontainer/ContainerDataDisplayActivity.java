@@ -2,11 +2,15 @@ package com.example.smokashi.smartcontainer;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 //import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -63,6 +67,110 @@ public class ContainerDataDisplayActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        SharedPreferences settings = getSharedPreferences("PREFS", 0);
+        String startstop = settings.getString("startstop", "");
+        if (startstop.equals("started")) {
+            menu.findItem(R.id.startstop).setTitle("Stop");
+        }
+
+        else if(startstop.equals("stopped")){
+            menu.findItem(R.id.startstop).setTitle("Start");
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()){
+            case R.id.refresh:
+                refreshContainerData();
+                //Toast.makeText(getBaseContext(), "You selected Phone", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.startstop:
+                startStopService();
+                //Toast.makeText(getBaseContext(), "You selected Computer", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.about:
+                Toast.makeText(getBaseContext(), "You selected about", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
+
+    }
+
+    void refreshContainerData(){
+        String url = "http://10.192.39.123:8080/messenger2/webapi/Database/refreshContainers";
+
+        HttpHandler sh = new HttpHandler();
+        String res = null;
+
+        res = sh.makeServiceCall(url,"GET");
+        if(res != null) {
+            Toast.makeText(getBaseContext(), "refresh done", Toast.LENGTH_SHORT).show();
+            new GetContainerData().execute();
+        }
+        else{
+            Toast.makeText(getBaseContext(), "Cannot refresh, Check Connection", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void startStopService(){
+        SharedPreferences settings = getSharedPreferences("PREFS", 0);
+        String startstop = settings.getString("startstop", "");
+        HttpHandler sh = new HttpHandler();
+        String res = null;
+
+        if(startstop.equals("started")){
+            String url = "http://10.192.39.123:8080/messenger2/webapi/toggleMonitoring/stopService";
+
+            res = sh.makeServiceCall(url,"GET");
+
+            if(res == null) {
+                Toast.makeText(getBaseContext(), "Your service stopped successfully", Toast.LENGTH_SHORT).show();
+
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("startstop", "stopped");
+                editor.commit();
+            }
+            else{
+                Toast.makeText(getBaseContext(), "Cannot stop Check your connection", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if(startstop.equals("stopped")){
+            String url = "http://10.192.39.123:8080/messenger2/webapi/toggleMonitoring/startService";
+
+            res = sh.makeServiceCall(url,"GET");
+            if(res == null) {
+                Toast.makeText(getBaseContext(), "Your service started successfully", Toast.LENGTH_SHORT).show();
+
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("startstop", "started");
+                editor.commit();
+            }
+            else{
+                Toast.makeText(getBaseContext(), "Cannot start Check your connection", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+
+
     private class GetContainerData extends AsyncTask<Void , Void , Void>{
 
         @Override
@@ -80,7 +188,7 @@ public class ContainerDataDisplayActivity extends AppCompatActivity {
 
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr = sh.makeServiceCall(url + container_no);
+            String jsonStr = sh.makeServiceCall(url + container_no,"GET");
 
             Log.e(TAG, "Response from URL: " + jsonStr);
 

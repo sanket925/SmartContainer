@@ -22,7 +22,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".ContainerListActivity" />
-        <activity android:name=".ContainerDataDisplayActivity"></activity>
+        <activity android:name=".ContainerDataDisplayActivity" />
+
+        <service android:name=".FCMInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".FcmMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

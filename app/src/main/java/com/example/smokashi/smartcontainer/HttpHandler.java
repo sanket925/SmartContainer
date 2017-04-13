@@ -7,11 +7,13 @@ package com.example.smokashi.smartcontainer;
 
 import android.util.Log;
 
+import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -24,14 +26,14 @@ public class HttpHandler {
     public HttpHandler(){
     }
 
-    public String makeServiceCall(String reqUrl){
+    public String makeServiceCall(String reqUrl,String Method){
         String response = null;
 
         try{
             URL url = new URL(reqUrl);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod(Method);
 
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);
@@ -46,6 +48,35 @@ public class HttpHandler {
         }
 
         return response;
+    }
+    public Boolean makeServiceCall(String reqUrl, String Method, String input) {
+        String response = null;
+        Boolean rc = true;
+        try{
+            URL url = new URL(reqUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(Method);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "text/plain");
+            OutputStream os = conn.getOutputStream();
+            os.write(input.getBytes());
+            os.flush();
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+        } catch (MalformedURLException e){
+            Log.e(TAG, "MalformedURLException: "+ e.getMessage());
+            rc = false;
+        } catch (ProtocolException e){
+            Log.e(TAG, "ProtocolException: "+ e.getMessage());
+            rc = false;
+        } catch (IOException e){
+            Log.e(TAG, "IOException: "+ e.getMessage());
+            rc = false;
+        } catch (Exception e){
+            Log.e(TAG, "Exception: "+ e.getMessage());
+            rc = false;
+        }
+        return rc ;
     }
 
 
